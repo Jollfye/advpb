@@ -9,63 +9,10 @@ using System.Collections.Specialized;
 
 namespace AdvProgressBar
 {
-    #region ---Interface---
-
-    /* собственные делегаты */
-    public delegate void AdvMouseClickEventHandler(object sender, AdvMouseEventArgs e);
-
-    public delegate void AdvMouseMoveEventHandler(object sender, AdvMouseEventArgs e);
-
-    public delegate void AdvValueChangedEventHandler(object sender, AdvValueChangedEventArgs e);
-
-    /* класс делегатов AdvMouseClickEventHandler и AdvMouseMoveEventHandler */
-    public class AdvMouseEventArgs : MouseEventArgs
-    {
-        /* значение элемента управления */
-        public int Value { get; set; }
-
-        public AdvMouseEventArgs(MouseButtons button, int clicks, int x, int y, int delta, int value)
-            : base(button, clicks, x, y, delta)
-        {
-            Value = value;
-        }
-
-    }
-
-    /* класс делегата AdvValueChangedEventHandler */
-    public class AdvValueChangedEventArgs : EventArgs
-    {
-        public int Value { get; set; }
-        public AdvValueChangedEventArgs(int value)
-        {
-            Value = value;
-        }
-    }
-
-    /* собственный интерфейс */
-    public interface IAdvEventProvider
-    {
-        event AdvMouseClickEventHandler AdvMouseClick;
-
-        event AdvMouseMoveEventHandler AdvMouseMove;
-
-        event AdvValueChangedEventHandler AdvValueChanged;
-    }
-
-    #endregion
-
-    #region ---AdvProgressBar---
-
-    /* установка иконки элемента управления */
     [ToolboxItem(true)]
     [ToolboxBitmapAttribute(typeof(AdvProgressBar), "AdvProgressBar.bmp")]
-    /* определение элемента управления и использование собственного интерфейса */
-    public class AdvProgressBar : ProgressBar, IAdvEventProvider
+    public class AdvProgressBar : ProgressBar
     {
-
-        #region --Constructors--
-
-        /* конструкторы элемента управления */
         public AdvProgressBar()
         {
             InitializeGradient(null);
@@ -74,36 +21,6 @@ namespace AdvProgressBar
             this.ForeColor = _foreColor;
             this.Location = new Point(0, 0);
             this.Size = new Size(100, 100);
-        }
-
-        /* использование структуры Nullable<T> как необязательный параметр в конструкторе */
-        public AdvProgressBar(List<Color> gradientColorList = null, int? thickness = null)
-        {
-            InitializeGradient(gradientColorList);
-            this.Thickness = thickness.HasValue ? thickness.Value : _thickness;
-            this.BaseColor = _baseColor;
-            this.BackColor = _backColor;
-            this.ForeColor = _foreColor;
-        }
-
-        public AdvProgressBar(List<Color> gradientColorList = null, int? thickness = null, Size? size = null, Point? location = null) 
-        {
-            InitializeGradient(gradientColorList);
-            this.Thickness = thickness.HasValue ? thickness.Value : _thickness;
-            this.Size = size.HasValue ? size.Value : new Size(100, 100);
-            this.Location = location.HasValue ? location.Value : new Point(0, 0);
-            this.BaseColor = _baseColor;
-            this.BackColor = _backColor;
-            this.ForeColor = _foreColor;
-        }
-
-        public AdvProgressBar(List<Color> gradientColorList = null, int? thickness = null, Color? baseColor = null, Color? backColor = null, Color? foreColor = null)
-        {
-            InitializeGradient(gradientColorList);
-            this.Thickness = thickness.HasValue ? thickness.Value : _thickness;
-            this.BaseColor = baseColor.HasValue ? baseColor.Value : _baseColor;
-            this.BackColor = backColor.HasValue ? backColor.Value : _backColor;
-            this.ForeColor = foreColor.HasValue ? foreColor.Value : _foreColor;
         }
 
         public AdvProgressBar(List<Color> gradientColorList = null, int? thickness = null, Color? baseColor = null, Color? backColor = null, Color? foreColor = null, Size? size = null, Point? location = null)
@@ -116,10 +33,6 @@ namespace AdvProgressBar
             this.Size = size.HasValue ? size.Value : new Size(100, 100);
             this.Location = location.HasValue ? location.Value : new Point(0, 0);
         }
-
-        #endregion
-
-        #region --Properties--
 
         private bool _active = true;
         [Description("Indicates whether the control reaction on value change")]
@@ -309,10 +222,6 @@ namespace AdvProgressBar
 
         private bool IsAdvMouseDownIn;
 
-        #endregion
-
-        #region --Methods--
-
         /* определение принадлежности точки эллипсу с заданным отступом от границ элемента управления */
         public bool IsPointInEllipse(Point point, int offset)
         {
@@ -462,10 +371,6 @@ namespace AdvProgressBar
             e.Graphics.DrawImage(bmp, Point.Empty);
         }
 
-        #endregion
-
-        #region --Events--
-
         /* собсвтенные события элемента управления */
         [CategoryAttribute("Mouse")]
         public event AdvMouseMoveEventHandler AdvMouseMove;
@@ -475,6 +380,36 @@ namespace AdvProgressBar
 
         [CategoryAttribute("Property Changed")]
         public event AdvValueChangedEventHandler AdvValueChanged;
+
+        public delegate void AdvMouseClickEventHandler(object sender, AdvMouseEventArgs e);
+
+        public delegate void AdvMouseMoveEventHandler(object sender, AdvMouseEventArgs e);
+
+        public delegate void AdvValueChangedEventHandler(object sender, AdvValueChangedEventArgs e);
+
+        /* класс делегатов AdvMouseClickEventHandler и AdvMouseMoveEventHandler */
+        public class AdvMouseEventArgs : MouseEventArgs
+        {
+            /* значение элемента управления */
+            public int Value { get; set; }
+
+            public AdvMouseEventArgs(MouseButtons button, int clicks, int x, int y, int delta, int value)
+                : base(button, clicks, x, y, delta)
+            {
+                Value = value;
+            }
+
+        }
+
+        /* класс делегата AdvValueChangedEventHandler */
+        public class AdvValueChangedEventArgs : EventArgs
+        {
+            public int Value { get; set; }
+            public AdvValueChangedEventArgs(int value)
+            {
+                Value = value;
+            }
+        }
 
         /* перегрузка базовых методов элемента управления для реализации событий */
         protected override void OnMouseMove(MouseEventArgs e)
@@ -521,10 +456,5 @@ namespace AdvProgressBar
             if (AdvValueChanged != null)
                 AdvValueChanged(this, e);
         }
-
-        #endregion
-
     }
-
-    #endregion
 }
