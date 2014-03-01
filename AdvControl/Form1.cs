@@ -56,5 +56,10 @@ namespace AdvControl
                 i = 1;
             advProgressBar2.Value = i++;
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
