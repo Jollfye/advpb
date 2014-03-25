@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 
 namespace AdvProgressBar
 {
@@ -122,7 +123,7 @@ namespace AdvProgressBar
                 }
             }
         }
-
+        
         private int _thickness = 10;
         [Description("The thickness of the control")]
         [CategoryAttribute("Layout")]
@@ -198,11 +199,12 @@ namespace AdvProgressBar
             }
         }
 
+        private int _value;
         public new int Value
         {
             get
             {
-                return base.Value;
+                return _value;
             }
             set
             {
@@ -210,7 +212,7 @@ namespace AdvProgressBar
                 {
                     if (value < this.Minimum || value > this.Maximum)
                         throw new ArgumentOutOfRangeException();
-                    base.Value = value;
+                    _value = value;
                     OnAdvValueChanged(new AdvValueChangedEventArgs(value));
                 }
                 catch (Exception exc)
@@ -219,6 +221,15 @@ namespace AdvProgressBar
                 }
             }
         }
+
+        //private int _maximum = 720;
+        //public new int Maximum
+        //{
+        //    get
+        //    {
+        //        return _maximum;
+        //    }
+        //}
 
         private bool IsAdvMouseDownIn;
 
@@ -251,7 +262,8 @@ namespace AdvProgressBar
         /* получение прямоугольника для построения и заливки заданного эллипса */
         private Rectangle GetRectangle(int offset)
         {
-            return new Rectangle(offset, offset, this.Width - offset * 2, this.Height - offset * 2);
+            int minrad = this.Width / 10;
+            return new Rectangle(offset + minrad, offset + minrad, this.Width - offset * 2 - minrad * 2, this.Height - offset * 2 - minrad * 2);
         }
 
         /* инициализация элемента управления и градиента индикатора */
@@ -261,6 +273,18 @@ namespace AdvProgressBar
               ControlStyles.AllPaintingInWmPaint |
               ControlStyles.UserPaint,
               true);
+
+            //Maximum = 720;
+
+            //Value = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+
+            Timer timer = new Timer();
+
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = 1000;
+            timer.Enabled = true;
+            timer.Start();
+        
 
             if (gradientColorList != null && gradientColorList.Count > 1)
             {
@@ -273,6 +297,11 @@ namespace AdvProgressBar
             FillGradientFullColorList(_gradientColorList);
 
             OnGradientColorListCollectionChanged();
+        }
+        void timer_Tick(object sender, EventArgs e)
+        {
+            Value = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+            Invalidate();
         }
 
         /* заполнение расширенной коллекции цветов на основе заданной и гладкости градиента индикатора */
@@ -327,45 +356,85 @@ namespace AdvProgressBar
             SolidBrush foreColorBrush = new SolidBrush(this.ForeColor);
 
             /* отрисовка внешнего эллипса элемента управления */
-            g.DrawEllipse(baseColorPen, GetRectangle(1));
-            g.FillEllipse(baseColorBrush, GetRectangle(1));
+            g.DrawEllipse(baseColorPen, GetRectangle(0));
+            g.FillEllipse(baseColorBrush, GetRectangle(0));
 
             /* отрисовка градиента индикатора */
             int i = 0;
+            float startAngle = -90f;
+            float endAngle = 360f * this.Value / this.Maximum - 90f;
+            float sweepAngle;
             if (Gradient)
             {
-                float endAngle = 360f * this.Value / this.Maximum - 90f;
-                float sweepAngle = 360f / _gradientFullColorList.Count;
-                for (float startAngle = -90f; startAngle < endAngle; startAngle += sweepAngle)
+                sweepAngle = 360f / _gradientFullColorList.Count;
+                for (; startAngle < endAngle; startAngle += sweepAngle)
                 {
                     if (i < _gradientFullColorList.Count)
                     {
-                        g.DrawPie(new Pen(_gradientFullColorList[i]), GetRectangle(1), startAngle, sweepAngle);
-                        g.FillPie(new SolidBrush(_gradientFullColorList[i++]), GetRectangle(1), startAngle, sweepAngle);
+                        g.DrawPie(new Pen(_gradientFullColorList[i]), GetRectangle(0), startAngle, sweepAngle);
+                        g.FillPie(new SolidBrush(_gradientFullColorList[i++]), GetRectangle(0), startAngle, sweepAngle);
                     }
                 }
             }
             /* заливка индикатора сплошным цветом, градиент отключен */
             else
             {
-                float startAngle = -90f;
-                float sweepAngle = (360f / this.Maximum) * this.Value;
-                g.DrawPie(foreColorPen, GetRectangle(1), startAngle, sweepAngle);
-                g.FillPie(foreColorBrush, GetRectangle(1), startAngle, sweepAngle);
+                sweepAngle = (360f / this.Maximum) * this.Value;
+                g.DrawPie(foreColorPen, GetRectangle(0), startAngle, sweepAngle);
+                g.FillPie(foreColorBrush, GetRectangle(0), startAngle, sweepAngle);
             }
 
             /* отрисовка внутреннего эллипса элемента управления */
             g.DrawEllipse(backColorPen, GetRectangle(this.Thickness));
             g.FillEllipse(backColorBrush, GetRectangle(this.Thickness));
 
+            int IsParity = 0;
+            if (Thickness % 2 != 0) IsParity = 1;
+
             /* создание надписи со значением индикатора в центре элемента управления */
-            string strValue = this.Value.ToString();
-            float size = (float)(Math.Min(this.Width - this.Thickness * 2, this.Height - this.Thickness * 2) / 2);
+            string strValue = (this.Value/60 == 0 ? 12 :this.Value/60).ToString();
+            float size = (float)(Math.Min(this.Width *0.7, this.Height *0.7) / 2);
             Font strFont = new Font("Cambria", (size > 0 ? size : 1), FontStyle.Bold, GraphicsUnit.Pixel);
             int strBrushColorIndex = i - 1 > 0 ? i - 1 : 0;
             Brush strBrush = Gradient ? new SolidBrush(_gradientFullColorList[strBrushColorIndex]) : foreColorBrush;
             SizeF strLen = g.MeasureString(strValue, strFont);
-            Point strLoc = new Point((int)((this.Width / 2) - (strLen.Width / 2)), (int)((this.Height / 2) - (strLen.Height / 2)));
+            Point strLoc = new Point((int)((this.Width / 2) - (strLen.Width / 2) + 2 + (-1) *(1 - IsParity)), (int)((this.Height / 2) - (strLen.Height / 2)) + 2 + (-1) *(1 - IsParity));
+            g.DrawString(strValue, strFont, strBrush, strLoc);
+
+            //
+            int minrad = this.Width / 10;
+            float rad = (this.Width - Thickness - minrad * 2) / 2;
+
+            //g.DrawEllipse(foreColorPen, this.Width / 2, this.Height /2, );
+
+            int minx = (int)(this.Width / 2 + rad * Math.Cos(endAngle * Math.PI / 180));
+            int miny = (int)(this.Height / 2 + rad * Math.Sin(endAngle * Math.PI / 180));
+            int minxfore = minx - minrad - Thickness / 2 + 1 - IsParity;
+            int minyfore = miny - minrad - Thickness / 2 + 1 - IsParity;
+            int minxback = minx - minrad + Thickness / 2;
+            int minyback = miny - minrad + Thickness / 2;
+            int minwfore = minrad * 2 + Thickness - 2 + IsParity;
+            int minhfore = minrad * 2 + Thickness - 2 + IsParity;
+            int minwback = minrad * 2 - Thickness + IsParity;
+            int minhback = minrad * 2 - Thickness + IsParity;
+            Rectangle minrectfore = new Rectangle(minxfore, minyfore, minwfore, minhfore);
+
+            g.FillEllipse(foreColorBrush, minrectfore);
+
+            Rectangle minrectcarrfore = new Rectangle(minxfore + (Thickness - 4 - IsParity) / 2 + IsParity, minyfore + (Thickness - 4 - IsParity) / 2 + IsParity, minwfore - (Thickness - 4 - IsParity) - 2 * IsParity, minhfore - (Thickness - 4 - IsParity) - 2 * IsParity);
+            g.FillPie(backColorBrush, minrectcarrfore, -90f + DateTime.Now.Second * 6f - 15f, 21f);
+
+            Rectangle minrectcarrback = new Rectangle(minxback - (Thickness - 4 - IsParity) / 2, minyback - (Thickness - 4 - IsParity) / 2, minwback + (Thickness - 4 - IsParity), minhback + (Thickness - 4 - IsParity));
+            g.FillEllipse(foreColorBrush, minrectcarrback);
+
+            Rectangle minrectback = new Rectangle(minxback, minyback, minwback, minhback);
+            g.FillEllipse(backColorBrush, minrectback);
+
+            strValue = String.Format("{0:d2}",this.Value%60);
+            size = (float)(Math.Min(minwfore , minhfore) / 2);
+            strFont = new Font("Cambria", (size > 0 ? size : 1), FontStyle.Bold, GraphicsUnit.Pixel);
+            strLen = g.MeasureString(strValue, strFont);
+            strLoc = new Point((int)((minxfore + minwfore / 2) - (strLen.Width / 2) +1 - IsParity), (int)((minyfore + minhfore / 2) - (strLen.Height / 2)) +1 - IsParity);
             g.DrawString(strValue, strFont, strBrush, strLoc);
 
             e.Graphics.DrawImage(bmp, Point.Empty);

@@ -39,12 +39,12 @@
             // trackBar1
             // 
             this.trackBar1.Location = new System.Drawing.Point(36, 271);
-            this.trackBar1.Maximum = 100;
+            this.trackBar1.Maximum = 720;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(200, 45);
             this.trackBar1.TabIndex = 1;
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.trackBar1.Value = 75;
+            this.trackBar1.Value = 6;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // textBox1
@@ -63,13 +63,15 @@
             // 
             // advProgressBar1
             // 
+            this.advProgressBar1.Gradient = false;
             this.advProgressBar1.GradientColorList = ((System.Collections.ObjectModel.ObservableCollection<System.Drawing.Color>)(resources.GetObject("advProgressBar1.GradientColorList")));
-            this.advProgressBar1.Location = new System.Drawing.Point(36, 42);
+            this.advProgressBar1.Location = new System.Drawing.Point(307, 78);
+            this.advProgressBar1.Maximum = 720;
             this.advProgressBar1.Name = "advProgressBar1";
-            this.advProgressBar1.Size = new System.Drawing.Size(200, 200);
+            this.advProgressBar1.Size = new System.Drawing.Size(429, 422);
             this.advProgressBar1.TabIndex = 0;
-            this.advProgressBar1.Thickness = 7;
-            this.advProgressBar1.Value = 65;
+            this.advProgressBar1.Thickness = 9;
+            this.advProgressBar1.Value = 141;
             this.advProgressBar1.AdvMouseMove += new AdvProgressBar.AdvProgressBar.AdvMouseMoveEventHandler(this.advProgressBar1_AdvMouseMove);
             this.advProgressBar1.AdvMouseClick += new AdvProgressBar.AdvProgressBar.AdvMouseClickEventHandler(this.advProgressBar1_AdvMouseClick);
             this.advProgressBar1.AdvValueChanged += new AdvProgressBar.AdvProgressBar.AdvValueChangedEventHandler(this.advProgressBar1_AdvValueChanged);
@@ -78,7 +80,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(278, 424);
+            this.ClientSize = new System.Drawing.Size(849, 566);
             this.Controls.Add(this.advProgressBar1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
