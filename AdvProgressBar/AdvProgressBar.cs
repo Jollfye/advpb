@@ -430,11 +430,12 @@ namespace AdvProgressBar
             Rectangle minrectback = new Rectangle(minxback, minyback, minwback, minhback);
             g.FillEllipse(backColorBrush, minrectback);
 
-            strValue = String.Format("{0:d2}",this.Value%60);
+            strValue = String.Format("{0:d2}",75); //this.Value%60
             size = (float)(Math.Min(minwfore , minhfore) / 2);
             strFont = new Font("Cambria", (size > 0 ? size : 1), FontStyle.Bold, GraphicsUnit.Pixel);
             strLen = g.MeasureString(strValue, strFont);
-            strLoc = new Point((int)((minxfore + minwfore / 2) - (strLen.Width / 2) +1 - IsParity), (int)((minyfore + minhfore / 2) - (strLen.Height / 2)) +1 - IsParity);
+            strLoc = new Point((int)((minxfore + minwfore / 2) - (strLen.Width / 2) + 2), (int)((minyfore + minhfore / 2) - (strLen.Height / 2)) + 2);
+            Trace.WriteLine(strLen);
             g.DrawString(strValue, strFont, strBrush, strLoc);
 
             e.Graphics.DrawImage(bmp, Point.Empty);
