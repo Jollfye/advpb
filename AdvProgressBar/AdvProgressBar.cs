@@ -267,7 +267,7 @@ namespace AdvProgressBar
 
             Timer timer = new Timer();
 
-            timer.Tick += new EventHandler(timer_Tick);
+            timer.Tick += new EventHandler(OnTick);
             timer.Interval = 1000;
             timer.Enabled = true;
             timer.Start();
@@ -285,9 +285,10 @@ namespace AdvProgressBar
 
             OnGradientColorListCollectionChanged();
         }
-        void timer_Tick(object sender, EventArgs e)
+        void OnTick(object sender, EventArgs e)
         {
-            Value = (DateTime.Now.Hour % 12) * 60 + DateTime.Now.Minute;
+            DateTime now = DateTime.Now;
+            Value = (now.Hour % 12) * 60 + now.Minute;
             Invalidate();
         }
 
