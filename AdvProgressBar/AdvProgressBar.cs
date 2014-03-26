@@ -222,15 +222,6 @@ namespace AdvProgressBar
             }
         }
 
-        //private int _maximum = 720;
-        //public new int Maximum
-        //{
-        //    get
-        //    {
-        //        return _maximum;
-        //    }
-        //}
-
         private bool IsAdvMouseDownIn;
 
         /* определение принадлежности точки эллипсу с заданным отступом от границ элемента управления */
@@ -274,10 +265,6 @@ namespace AdvProgressBar
               ControlStyles.UserPaint,
               true);
 
-            //Maximum = 720;
-
-            //Value = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
-
             Timer timer = new Timer();
 
             timer.Tick += new EventHandler(timer_Tick);
@@ -300,7 +287,7 @@ namespace AdvProgressBar
         }
         void timer_Tick(object sender, EventArgs e)
         {
-            Value = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+            Value = (DateTime.Now.Hour % 12) * 60 + DateTime.Now.Minute;
             Invalidate();
         }
 
@@ -395,18 +382,15 @@ namespace AdvProgressBar
             string strValue = (this.Value/60 == 0 ? 12 :this.Value/60).ToString();
             float size = (float)(Math.Min(this.Width *0.7, this.Height *0.7) / 2);
             Font strFont = new Font("Cambria", (size > 0 ? size : 1), FontStyle.Bold, GraphicsUnit.Pixel);
-            int strBrushColorIndex = i - 1 > 0 ? i - 1 : 0;
-            Brush strBrush = Gradient ? new SolidBrush(_gradientFullColorList[strBrushColorIndex]) : foreColorBrush;
+            int GradientLastColorIndex = i - 1 > 0 ? i - 1 : 0;
+            Brush foreBrush = Gradient ? new SolidBrush(_gradientFullColorList[GradientLastColorIndex]) : foreColorBrush;
             SizeF strLen = g.MeasureString(strValue, strFont);
             Point strLoc = new Point((int)((this.Width / 2) - (strLen.Width / 2) + 2 + (-1) *(1 - IsParity)), (int)((this.Height / 2) - (strLen.Height / 2)) + 2 + (-1) *(1 - IsParity));
-            g.DrawString(strValue, strFont, strBrush, strLoc);
+            g.DrawString(strValue, strFont, foreBrush, strLoc);
 
             //
             int minrad = this.Width / 10;
             float rad = (this.Width - Thickness - minrad * 2) / 2;
-
-            //g.DrawEllipse(foreColorPen, this.Width / 2, this.Height /2, );
-
             int minx = (int)(this.Width / 2 + rad * Math.Cos(endAngle * Math.PI / 180));
             int miny = (int)(this.Height / 2 + rad * Math.Sin(endAngle * Math.PI / 180));
             int minxfore = minx - minrad - Thickness / 2 + 1 - IsParity;
@@ -417,26 +401,25 @@ namespace AdvProgressBar
             int minhfore = minrad * 2 + Thickness - 2 + IsParity;
             int minwback = minrad * 2 - Thickness + IsParity;
             int minhback = minrad * 2 - Thickness + IsParity;
-            Rectangle minrectfore = new Rectangle(minxfore, minyfore, minwfore, minhfore);
 
-            g.FillEllipse(foreColorBrush, minrectfore);
+            Rectangle minrectfore = new Rectangle(minxfore, minyfore, minwfore, minhfore);
+            g.FillEllipse(foreBrush, minrectfore);
 
             Rectangle minrectcarrfore = new Rectangle(minxfore + (Thickness - 4 - IsParity) / 2 + IsParity, minyfore + (Thickness - 4 - IsParity) / 2 + IsParity, minwfore - (Thickness - 4 - IsParity) - 2 * IsParity, minhfore - (Thickness - 4 - IsParity) - 2 * IsParity);
             g.FillPie(backColorBrush, minrectcarrfore, -90f + DateTime.Now.Second * 6f - 15f, 21f);
 
             Rectangle minrectcarrback = new Rectangle(minxback - (Thickness - 4 - IsParity) / 2, minyback - (Thickness - 4 - IsParity) / 2, minwback + (Thickness - 4 - IsParity), minhback + (Thickness - 4 - IsParity));
-            g.FillEllipse(foreColorBrush, minrectcarrback);
+            g.FillEllipse(foreBrush, minrectcarrback);
 
             Rectangle minrectback = new Rectangle(minxback, minyback, minwback, minhback);
             g.FillEllipse(backColorBrush, minrectback);
 
-            strValue = String.Format("{0:d2}", this.Value%60); 
+            strValue = String.Format("{0:d2}", this.Value % 60);
             size = (float)(Math.Min(minwfore , minhfore) / 2);
             strFont = new Font("Cambria", (size > 0 ? size : 1), FontStyle.Bold, GraphicsUnit.Pixel);
             strLen = g.MeasureString(strValue, strFont);
             strLoc = new Point((int)((minxfore + minwfore / 2) - (strLen.Width / 2) + 2), (int)((minyfore + minhfore / 2) - (strLen.Height / 2)) + 2);
-            Trace.WriteLine(strLen);
-            g.DrawString(strValue, strFont, strBrush, strLoc);
+            g.DrawString(strValue, strFont, foreBrush, strLoc);
 
             e.Graphics.DrawImage(bmp, Point.Empty);
         }
