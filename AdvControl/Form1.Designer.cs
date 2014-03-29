@@ -70,7 +70,7 @@
             this.advProgressBar1.Size = new System.Drawing.Size(429, 422);
             this.advProgressBar1.TabIndex = 0;
             this.advProgressBar1.Thickness = 9;
-            this.advProgressBar1.Value = 533;
+            this.advProgressBar1.Value = 572;
             this.advProgressBar1.AdvMouseMove += new AdvProgressBar.AdvProgressBar.AdvMouseMoveEventHandler(this.advProgressBar1_AdvMouseMove);
             this.advProgressBar1.AdvMouseClick += new AdvProgressBar.AdvProgressBar.AdvMouseClickEventHandler(this.advProgressBar1_AdvMouseClick);
             this.advProgressBar1.AdvValueChanged += new AdvProgressBar.AdvProgressBar.AdvValueChangedEventHandler(this.advProgressBar1_AdvValueChanged);
