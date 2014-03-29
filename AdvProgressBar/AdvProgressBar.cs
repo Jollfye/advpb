@@ -380,14 +380,22 @@ namespace AdvProgressBar
             if (Thickness % 2 != 0) IsParity = 1;
 
             /* создание надписи со значением индикатора в центре элемента управления */
-            string strValue = (this.Value/60 == 0 ? 12 :this.Value/60).ToString();
-            float size = (float)(Math.Min(this.Width *0.7, this.Height *0.7) / 2);
+            string strValue = "11";//(this.Value/60 == 0 ? 12 :this.Value/60).ToString();
+            float size = (float)(Math.Min(this.Width *0.5, this.Height *0.5) / 2);
             Font strFont = new Font("Cambria", (size > 0 ? size : 1), FontStyle.Bold, GraphicsUnit.Pixel);
             int GradientLastColorIndex = i - 1 > 0 ? i - 1 : 0;
             Brush foreBrush = Gradient ? new SolidBrush(_gradientFullColorList[GradientLastColorIndex]) : foreColorBrush;
             SizeF strLen = g.MeasureString(strValue, strFont);
             Point strLoc = new Point((int)((this.Width / 2) - (strLen.Width / 2) + 2 + (-1) *(1 - IsParity)), (int)((this.Height / 2) - (strLen.Height / 2)) + 2 + (-1) *(1 - IsParity));
             g.DrawString(strValue, strFont, foreBrush, strLoc);
+
+            strValue = this.Value % 60 < 12 ? "AM" : "PM";
+            size /= 3;
+            strFont = new Font("Cambria", (size > 0 ? size : 1), FontStyle.Bold, GraphicsUnit.Pixel);
+            strLoc.X += (int)strLen.Width * 11/15;
+            g.DrawString(strValue, strFont, foreBrush, strLoc);
+
+            g.DrawRectangle(Pens.Black, strLoc.X, strLoc.Y, strLen.Width, strLen.Height);
 
             //
             int minrad = this.Width / 10;
