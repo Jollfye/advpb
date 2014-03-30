@@ -33,6 +33,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.advProgressBar1 = new AdvProgressBar.AdvProgressBar();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,22 +65,32 @@
             // advProgressBar1
             // 
             this.advProgressBar1.GradientColorList = ((System.Collections.ObjectModel.ObservableCollection<System.Drawing.Color>)(resources.GetObject("advProgressBar1.GradientColorList")));
-            this.advProgressBar1.Location = new System.Drawing.Point(307, 78);
+            this.advProgressBar1.Location = new System.Drawing.Point(295, 36);
             this.advProgressBar1.Maximum = 720;
             this.advProgressBar1.Name = "advProgressBar1";
-            this.advProgressBar1.Size = new System.Drawing.Size(429, 422);
+            this.advProgressBar1.Size = new System.Drawing.Size(400, 500);
             this.advProgressBar1.TabIndex = 0;
             this.advProgressBar1.Thickness = 9;
-            this.advProgressBar1.Value = 572;
+            this.advProgressBar1.Value = 382;
             this.advProgressBar1.AdvMouseMove += new AdvProgressBar.AdvProgressBar.AdvMouseMoveEventHandler(this.advProgressBar1_AdvMouseMove);
             this.advProgressBar1.AdvMouseClick += new AdvProgressBar.AdvProgressBar.AdvMouseClickEventHandler(this.advProgressBar1_AdvMouseClick);
             this.advProgressBar1.AdvValueChanged += new AdvProgressBar.AdvProgressBar.AdvValueChangedEventHandler(this.advProgressBar1_AdvValueChanged);
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Font = new System.Drawing.Font("SketchFlow Print", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.Location = new System.Drawing.Point(459, 518);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(85, 52);
+            this.richTextBox1.TabIndex = 4;
+            this.richTextBox1.Text = "OK";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(849, 566);
+            this.ClientSize = new System.Drawing.Size(794, 582);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.advProgressBar1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
@@ -98,6 +109,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
         private AdvProgressBar.AdvProgressBar advProgressBar1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
 
     }
 }
