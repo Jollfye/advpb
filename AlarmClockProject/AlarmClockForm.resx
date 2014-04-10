@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="alarmClockControl1.GradientColorList" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="AlarmClockControl.GradientColorList" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAJ4BU3lzdGVtLkRyYXdpbmcsIFZlcnNpb249NC4wLjAuMCwgQ3Vs
         dHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iMDNmNWY3ZjExZDUwYTNhXV0sIFN5c3RlbSwgVmVy
@@ -135,9 +135,9 @@
         bj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EF
         BQAAADdTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0YDFbW1N5c3RlbS5EcmF3aW5nLkNvbG9y
         AwAAAAZfaXRlbXMFX3NpemUIX3ZlcnNpb24EAAAWU3lzdGVtLkRyYXdpbmcuQ29sb3JbXQYAAAAICAMA
-        AAAJBwAAAAMAAAADAAAABwcAAAAAAQAAAAQAAAAEFFN5c3RlbS5EcmF3aW5nLkNvbG9yBgAAAAX4////
+        AAAJBwAAAAAAAAARAAAABwcAAAAAAQAAAAQAAAAEFFN5c3RlbS5EcmF3aW5nLkNvbG9yBgAAAAX4////
         FFN5c3RlbS5EcmF3aW5nLkNvbG9yBAAAAARuYW1lBXZhbHVlCmtub3duQ29sb3IFc3RhdGUBAAAACQcH
-        BgAAAArhwnT/AAAAAAAAAgAB9/////j///8KyJEB/wAAAAAAAAIAAfb////4////CppbAP8AAAAAAAAC
+        BgAAAAoAAAAAAAAAAAAAAAAB9/////j///8KAAAAAAAAAAAAAAAAAfb////4////CgAAAAAAAAAAAAAA
         AAH1////+P///woAAAAAAAAAAAAAAAAL
 </value>
   </data>
